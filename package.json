@@ -1,0 +1,27 @@
+{
+  "name": "FairWebProject",
+  "version": "0.0.1",
+  "description": "An app to track offensive tweets",
+  "main": "app.js",
+  "dependencies": {
+    "twit": "~1.1.18",
+    "typescript": "~1.0.1",
+    "tsd": "~0.5.7",
+    "express": "~3.15.0",
+    "mongodb": "~1.4.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "postinstall": "./node_modules/tsd/build/cli.js reinstall --save && ./node_modules/typescript/bin/tsc build.ts --out build/build.js",
+    "start": "node build/build.js && node build/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/superboum/FairWebProject.git"
+  },
+  "author": "Quentin Dufour",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/superboum/FairWebProject/issues"
+  }
+}
