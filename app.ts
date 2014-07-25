@@ -6,16 +6,23 @@ module FairWebProject
   var path:    any     = require('path');
   var http:    any     = require('http');
   var querystring: any = require('querystring');
+ 
   export class App {
     private app: any;
+
     constructor() {
       this.app = express();
     }
     
     public start(port: number, onstart: () => void): void {
       console.log('Starting server on port: ' + port);
+      this.setupModels();
       this.setupRoutes();
       this.app.listen(port, onstart);
+    }
+
+    private setupModels(): void {
+      FairWebProject.Model.Report.init();
     }
 
     private setupRoutes(): void {

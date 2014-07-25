@@ -5,7 +5,10 @@ module FairWebProject.Model
   var Twit = require('twit');
   
   export class Report {
-    public constructor() {
+
+    public static base;
+
+    public static init() {
       var T = new Twit({
         consumer_key:         FairWebProject.Config.Twitter.consumer_key
       , consumer_secret:      FairWebProject.Config.Twitter.consumer_secret
@@ -13,15 +16,17 @@ module FairWebProject.Model
       , access_token_secret:  FairWebProject.Config.Twitter.access_token_secret
       });
 
-      var stream = T.stream('statuses/filter', { track: '#FairWebProject' });
+      var stream = T.stream('statuses/filter', { track: FairWebProject.Config.Twitter.hashtag });
+      console.log('stream registered');
       stream.on('tweet', function (tweet) {
-        console.log(tweet);
+        (new FairWebProject.Model.Answer(tweet)).save();
       });
     }
   }
 }
 
-var r = new FairWebProject.Model.Report();
+console.log('Run');
+FairWebProject.Model.Report.init();
 
 setTimeout(function() {
     console.log('Quit');
