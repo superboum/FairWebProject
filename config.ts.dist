@@ -1,0 +1,13 @@
+/// <reference path="./bootstrap.d.ts"/>
+
+module FairWebProject.Config {
+
+  export class Twitter {
+    public static consumer_key:        string = '';
+    public static consumer_secret:     string = '';
+    public static access_token:        string = '';
+    public static access_token_secret: string = '';
+
+    public static hashtag: string = "#FairWebProject";
+  }
+}

@@ -1,4 +1,18 @@
 FairWebProject
 ==============
 
-A project to track tweets which can offend people
+A project to track offensive tweets
+
+Installation
+------------
+
+```bash
+npm install
+```
+
+Run
+---
+
+```bash
+npm start
+```
