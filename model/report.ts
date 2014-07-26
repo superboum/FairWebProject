@@ -17,14 +17,24 @@ module FairWebProject.Model
       });
 
       var stream = T.stream('statuses/filter', { track: Config.Twitter.hashtag });
-      console.log('[FWP.MOD.REP] Stream registered');
+      console.log('[FWP.MOD.REP] Stream registered for '+Config.Twitter.hashtag);
 
       stream.on('tweet', function (tweet) {
+        console.log('[FWP.MOD.REP] A new tweet arrived');
         (new Answer(tweet)).save();
       });
     }
 
-    public static getList() {
+    public static getList(callback: (err,doc) => void) {
+      var groupCriteria = {};
+      groupCriteria['keys'] = ['offensiveUser.statusId', 'offensiveUser.userId'];
+      groupCriteria['condition'] = {};
+      groupCriteria['initial'] = {'reported': 0};
+      groupCriteria['reduce'] = "function (obj, prev) { prev.reported++; }";
+
+      Tool.Database.requestByGroup('fwp_answer',groupCriteria,0,function(err, doc) {
+        callback(err,doc);
+      });
     }
   }
 }

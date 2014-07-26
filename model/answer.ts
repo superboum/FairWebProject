@@ -10,24 +10,28 @@ module FairWebProject.Model
 
     public constructor (tweet) {
       this.offensiveUser = {};
-      this.offensiveUser['id'] = tweet.in_reply_to_status_id;
-      this.offensiveUser['messageId'] = tweet.in_reply_to_user_id;
+      this.offensiveUser['statusId'] = tweet.in_reply_to_status_id;
+      this.offensiveUser['userId'] = tweet.in_reply_to_user_id;
 
       this.offendedUser = {};
       this.offendedUser['identity'] = tweet.user;
-      this.offendedUser.message = {};
-      this.offendedUser.message.id = tweet.id;
-      this.offendedUser.message.text = tweet.text;
-      this.offendedUser.message.hastags = tweet.entities.hashtags;
-      this.offendedUser.message.sensisitive = tweet.possibly_sensitive;
-      this.offendedUser.message.filter_level = tweet.filter_level;
-      this.offendedUser.message.lang = tweet.lang;
+      this.offendedUser.status = {};
+      this.offendedUser.status.id = tweet.id;
+      this.offendedUser.status.text = tweet.text;
+      this.offendedUser.status.hastags = tweet.entities.hashtags;
+      this.offendedUser.status.sensisitive = tweet.possibly_sensitive;
+      this.offendedUser.status.filter_level = tweet.filter_level;
+      this.offendedUser.status.lang = tweet.lang;
       
       return this;
     }
 
     public save() {
-      Tool.Database.save(this, 'fwp_answer');
+      if (this.offensiveUser.statusId == null || this.offensiveUser.userId == null) {
+        console.log('[FWP.MOD.ANS] Should be an answer');
+      } else {
+        Tool.Database.save(this, 'fwp_answer');
+      }
     }
   }
 }

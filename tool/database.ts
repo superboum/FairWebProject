@@ -17,13 +17,41 @@ module FairWebProject.Tool
 
     public static save(object: any, collectionName: string) {
       Database.db.collection(collectionName, function (err, collection) {
-        collection.insert(object, function(err) {
-          if(err) { console.log('[FWP.TOO.DAT] '+err); }
-          else { console.log('[FWP.TOO.DAT] Successfully inserted object in '+collectionName); }
-        });
+        if(err) { console.log('[FWP.TOO.DAT] Error -> '+err); }
+        else {
+          collection.insert(object, function(err) {
+            if(err) { console.log('[FWP.TOO.DAT] Error -> '+err); }
+            else { console.log('[FWP.TOO.DAT] Successfully inserted object in '+collectionName); }
+          });
+        }
       });
     }
 
+    public static request(collectionName: string, criteria:any, limit: number, callback: (err: any, doc: any) => void) {
+      Database.db.collection(collectionName, function(err, collection) {
+        if(err) { console.log('[FWP.TOO.DAT] Error -> '+err); }
+        else {
+          collection.find(criteria).limit(limit).toArray(function(err, docs) {
+            callback(err, docs);
+            if(err) { console.log('[FWP.TOO.DAT] Error -> '+err); }
+            else { console.log('[FWP.TOO.DAT] Successfuly requested objects in '+collectionName+' with criteria '+criteria); }
+          });
+        }
+      });
+    }
+
+    public static requestByGroup(collectionName: string, groupCriteria: any, limit: number, callback: (err: any, doc: any) => void) {
+      Database.db.collection(collectionName, function(err, collection) {
+        if(err) { console.log('[FWP.TOO.DAT] Error -> '+err); }
+        else {
+          collection.group(groupCriteria.keys, groupCriteria.condition, groupCriteria.initial, groupCriteria.reduce, function(err, docs) {
+            callback(err, docs);
+            if(err) { console.log('[FWP.TOO.DAT] Error -> '+err); }
+            else { console.log('[FWP.TOO.DAT] Successfuly requested grouped objects in '+collectionName); }
+          });
+        }
+      });
+    }
   }
 }
 /*
