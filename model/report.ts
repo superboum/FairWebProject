@@ -16,9 +16,26 @@ module FairWebProject.Model
       , access_token_secret:  Config.Twitter.access_token_secret
       });
 
+      var connecting = false;
+
       var stream = T.stream('statuses/filter', { track: Config.Twitter.hashtag });
       console.log('[FWP.MOD.REP] Stream registered for '+Config.Twitter.hashtag);
 
+      stream.on('disconnect', function (disconnectMessage) {
+        console.log('[FWP.MOD.REP] Disconnected from Twitter '+disconnectMessage);
+      });
+
+      stream.on('connect', function (request) {
+        console.log('[FWP.MOD.REP] Attempting a connection to Twitter');
+        connecting = true;
+      })
+
+      stream.on('connected', function (response) {
+        if (connecting) {
+          console.log('[FWP.MOD.REP] Connection to Twitter OK');
+        }
+        connecting = false;
+      })
       stream.on('tweet', function (tweet) {
         console.log('[FWP.MOD.REP] A new tweet arrived');
         (new Answer(tweet)).save();
@@ -38,11 +55,3 @@ module FairWebProject.Model
     }
   }
 }
-/*
-console.log('Run');
-FairWebProject.Model.Report.init();
-
-setTimeout(function() {
-    console.log('Quit');
-}, 300000000);
-*/

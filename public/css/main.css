@@ -1,0 +1,15 @@
+body {
+  font-family: sans-serif;
+  color: #666;
+}
+
+h1 {
+  font-weight: 100;
+  text-align: center;
+  font-size: 2.5em;
+}
+
+.container {
+  margin: auto;
+  width: 500px;
+}
