@@ -10,4 +10,8 @@ module FairWebProject.Config {
 
     public static hashtag: string = "#FairWebProject";
   }
+
+  export class Mongo {
+    public static url: string = "mongodb://127.0.0.1:27017/fwp";
+  }
 }

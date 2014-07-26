@@ -15,14 +15,22 @@ module FairWebProject
     }
     
     public start(port: number, onstart: () => void): void {
-      console.log('Starting server on port: ' + port);
+      console.log('[FWP.ROO.APP] Starting server on port: ' + port);
+      this.setupTools();
       this.setupModels();
       this.setupRoutes();
       this.app.listen(port, onstart);
     }
 
+    private setupTools(): void {
+      Tool.Database.init(function(err) {
+        if (err) { console.log('[FWD.ROO.APP] ' + err); }
+        else { console.log('[FWP.ROO.APP] Database connection OK'); }
+      });
+    }
+
     private setupModels(): void {
-      FairWebProject.Model.Report.init();
+      Model.Report.init();
     }
 
     private setupRoutes(): void {
@@ -39,5 +47,5 @@ module FairWebProject
 var portNumber = <number>process.env.PORT || 3000; 
 
 (new FairWebProject.App()).start(portNumber, () => {
-    console.log('Server started');
+    console.log('[FWP.ROO.APP] Server started');
 });

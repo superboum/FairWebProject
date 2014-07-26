@@ -2,30 +2,32 @@
 
 module FairWebProject.Model
 {
-  export class Answer {
-    public offensiveUserId: number;
-    public offensiveUserName: string;
-    public offensiveUserMessageId: number;
 
-    public offendedUserId: number;
-    public offendedUserName: string;
-    public offendedUserMessageId: number;
-    public offendedUserHashtags: string[];
+  export class Answer {
+    public offensiveUser: any;
+
+    public offendedUser: any;
 
     public constructor (tweet) {
-      this.offensiveUserId = tweet.in_reply_to_status_id;
-      this.offensiveUserName = tweet.in_reply_to_screen_name;
-      this.offensiveUserMessageId = tweet.in_reply_to_user_id;
+      this.offensiveUser = {};
+      this.offensiveUser['id'] = tweet.in_reply_to_status_id;
+      this.offensiveUser['messageId'] = tweet.in_reply_to_user_id;
 
-      this.offendedUserId = tweet.user.id;
-      this.offendedUserName = tweet.user.screen_name;
-      this.offendedUserMessageId = tweet.id;
-      this.offendedUserHashtags = tweet.entities.hashtags;
+      this.offendedUser = {};
+      this.offendedUser['identity'] = tweet.user;
+      this.offendedUser.message = {};
+      this.offendedUser.message.id = tweet.id;
+      this.offendedUser.message.text = tweet.text;
+      this.offendedUser.message.hastags = tweet.entities.hashtags;
+      this.offendedUser.message.sensisitive = tweet.possibly_sensitive;
+      this.offendedUser.message.filter_level = tweet.filter_level;
+      this.offendedUser.message.lang = tweet.lang;
       
       return this;
     }
 
     public save() {
+      Tool.Database.save(this, 'fwp_answer');
     }
   }
 }

@@ -10,25 +10,29 @@ module FairWebProject.Model
 
     public static init() {
       var T = new Twit({
-        consumer_key:         FairWebProject.Config.Twitter.consumer_key
-      , consumer_secret:      FairWebProject.Config.Twitter.consumer_secret
-      , access_token:         FairWebProject.Config.Twitter.access_token
-      , access_token_secret:  FairWebProject.Config.Twitter.access_token_secret
+        consumer_key:         Config.Twitter.consumer_key
+      , consumer_secret:      Config.Twitter.consumer_secret
+      , access_token:         Config.Twitter.access_token
+      , access_token_secret:  Config.Twitter.access_token_secret
       });
 
-      var stream = T.stream('statuses/filter', { track: FairWebProject.Config.Twitter.hashtag });
-      console.log('stream registered');
+      var stream = T.stream('statuses/filter', { track: Config.Twitter.hashtag });
+      console.log('[FWP.MOD.REP] Stream registered');
+
       stream.on('tweet', function (tweet) {
-        (new FairWebProject.Model.Answer(tweet)).save();
+        (new Answer(tweet)).save();
       });
+    }
+
+    public static getList() {
     }
   }
 }
-
+/*
 console.log('Run');
 FairWebProject.Model.Report.init();
 
 setTimeout(function() {
     console.log('Quit');
 }, 300000000);
-
+*/
